@@ -88,7 +88,7 @@
         </DCCReference>
         <DCCReference Include="IntegerCalculatorUnit.pas"/>
         <DCCReference Include="BinaryIntegerOperatorFunctionUnit.pas"/>
-        <DCCReference Include="IntegerPoweUnit.pas"/>
+        <DCCReference Include="IntegerPowerUnit.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

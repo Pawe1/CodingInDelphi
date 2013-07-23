@@ -9,7 +9,7 @@ uses
   IntegerCalculatorFormUnit in 'IntegerCalculatorFormUnit.pas' {IntegerCalculatorForm},
   IntegerCalculatorUnit in 'IntegerCalculatorUnit.pas',
   BinaryIntegerOperatorFunctionUnit in 'BinaryIntegerOperatorFunctionUnit.pas',
-  IntegerPoweUnit in 'IntegerPoweUnit.pas';
+  IntegerPowerUnit in 'IntegerPowerUnit.pas';
 
 {$R *.res}
 

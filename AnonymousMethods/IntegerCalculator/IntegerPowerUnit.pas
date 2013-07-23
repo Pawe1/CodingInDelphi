@@ -2,7 +2,7 @@
 for BeSharp.net and Coding In Delphi.
 Full BSD License is available at http://BeSharp.codeplex.com/license }
 
-unit IntegerPoweUnit;
+unit IntegerPowerUnit;
 
 interface
 

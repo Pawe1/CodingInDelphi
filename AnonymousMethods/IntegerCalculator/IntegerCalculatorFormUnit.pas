@@ -54,7 +54,7 @@ var
 implementation
 
 uses
-  System.Math, IntegerPoweUnit;
+  System.Math, IntegerPowerUnit;
 
 {$R *.dfm}
 
