@@ -5,6 +5,9 @@ program DoNotMixInterfaceAndObjectReferencesConsoleProject;
 {$R *.res}
 
 uses
+{$ifdef FastMM}
+  FastMM4,
+{$endif FastMM}
   System.SysUtils;
 
 procedure ShowRefCount2(ObjectReference: TInterfacedObject; const Comment: string);
@@ -32,10 +35,10 @@ var
   end;
 begin
   InterfaceReference := TInterfacedObject.Create();
-  {1} ShowRefCount('RefCount after "InterfaceReference := TInterfacedObject.Create();"');
+  {1} ShowRefCount('InterfaceReference := TInterfacedObject.Create();');
   InterfaceReference := nil; // this causes RefCount = 0, thereby destroying the underlying object
   // we can do this since an assignment check is done in ShowRefCount
-  {none} ShowRefCount('RefCount after "InterfaceReference := nil;"');
+  {none} ShowRefCount('InterfaceReference := nil;');
 end;
 
 procedure DoNotMixInterfaceAndObjectReferences;
@@ -48,17 +51,17 @@ var
   end;
 begin
   ObjectReference := TInterfacedObject.Create();
-  {0} ShowRefCount('RefCount after "ObjectReference := TInterfacedObject.Create();"');
+  {0} ShowRefCount('ObjectReference := TInterfacedObject.Create();');
   InterfaceReference := ObjectReference;
-  {1} ShowRefCount('RefCount after "InterfaceReference := ObjectReference;"');
+  {1} ShowRefCount('InterfaceReference := ObjectReference;');
   InterfaceReference := nil;
   // this causes RefCount = 0, thereby destroying the underlying object
   // since ObjectReference has been destroyed, you cannot do this as ShowRefCount uses ObjectReference
   // but in reallity, this case succeeds as the freed memory has not yet been overwritten.
   // In this cast you will see 0.
-  // It *only* fails when using FastMM4 in FullDebugMode with CatchUseOfFreedInterfaces
+  // It *only* fails when using FastMM4 in FullDebugMode with or without CatchUseOfFreedInterfaces
   // see http://stackoverflow.com/questions/3139344/how-to-find-a-dangling-interface-that-causes-an-av-in-delphi/3140228#3140228
-  {0, but should AV} ShowRefCount('RefCount after "InterfaceReference := nil;"');
+  {0 for normally MM, <>0 for FastMM} ShowRefCount('InterfaceReference := nil;');
 end;
 
 begin
