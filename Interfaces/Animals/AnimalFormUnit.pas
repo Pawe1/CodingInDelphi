@@ -9,7 +9,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
   System.Actions, Vcl.ActnList, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan,
-  AnimalClassesUnit;
+  AnimalClassesUnit, System.Rtti;
 
 type
   TAnimalForm = class(TForm)
@@ -23,6 +23,11 @@ type
     procedure FillAnimalTypesActionExecute(Sender: TObject);
     procedure ShowAnimalLocomotionsActionExecute(Sender: TObject);
     procedure ShowAnimalLocomotionsActionUpdate(Sender: TObject);
+  strict private
+    function SupportsAndLog_Fails(const Instance: IInterface; out Intf; const IID:
+        TGUID; const InterfaceTypeInfo: Pointer = nil): Boolean;
+    function SupportsAndLog_Works(const Instance: IInterface; out Intf; const IID:
+        TGUID; const InterfaceTypeInfo: Pointer = nil): Boolean;
   strict protected
     procedure Log(const Line: string); overload; virtual;
     procedure Log(AnimalClass: TClass); overload; virtual;
@@ -38,7 +43,6 @@ var
 implementation
 
 uses
-  System.Rtti,
   RttiHelpers,
   LocomotionInterfacesUnit;
 
@@ -155,47 +159,21 @@ end;
 
 function TAnimalForm.SupportsAndLog(const Instance: IInterface; const IID:
     TGUID; out Intf; const InterfaceTypeInfo: Pointer = nil): Boolean;
+begin
+  Result := SupportsAndLog_Works(Instance, Intf, IID, InterfaceTypeInfo);
+//  Result := SupportsAndLog_Fails(Instance, Intf, IID, InterfaceTypeInfo);
+end;
+
+function TAnimalForm.SupportsAndLog_Fails(const Instance: IInterface; out Intf;
+    const IID: TGUID; const InterfaceTypeInfo: Pointer = nil): Boolean;
 var
-  Line: string;
   RttiContext: TRttiContext;
+  Line: string;
   RttiType: TRttiType;
 begin
-(* This works:
-  Result := Supports(Instance, IID, Intf);
-  if Result then
-  begin
-    if Instance is TObject then
-      Line := TObject(Instance).ClassName;
-    RttiContext := TRttiContext.Create();
-    try
-      RttiType := RttiContext.GetType(IID);
-      Line := Format('%s implements %s', [Line, RttiType.Name]);
-      Log(Line);
-    finally
-      RttiContext.Free;
-    end;
-*)
-(* This fails at GetType. Why?
-  RttiContext := TRttiContext.Create();
-  try
-    if Instance is TObject then
-      Line := TObject(Instance).ClassName;
-    Result := Supports(Instance, IID, Intf);
-    RttiType := RttiContext.GetType(IID);
-    if Result then
-    begin
-      Line := Format('%s implements %s', [Line, RttiType.Name]);
-      Log(Line);
-    end
-    else
-    begin
-      Line := Format('%s does not implement %s', [Line, RttiType.Name]);
-      Log(Line);
-    end;
-  finally
-    RttiContext.Free;
-  end;
-*)
+// This works because we always call RttiContext.FindType(IID) even if no class implements the interface with the IID.
+// When no such class exists, FindType will return nil, and we AV  when using RttiType.
+// That is demonstrated in RttiContext_GetTypes_vs_GetType_on_Interfaces_ConsoleProject.dproj
   if Instance is TObject then
     Line := TObject(Instance).ClassName;
   Result := Supports(Instance, IID, Intf);
@@ -217,6 +195,33 @@ begin
     end;
   finally
     RttiContext.Free;
+  end;
+end;
+
+function TAnimalForm.SupportsAndLog_Works(const Instance: IInterface; out Intf;
+    const IID: TGUID; const InterfaceTypeInfo: Pointer = nil): Boolean;
+var
+  RttiContext: TRttiContext;
+  Line: string;
+  RttiType: TRttiType;
+begin
+// This works because we only call RttiContext.FindType(IID) when the interface with the IID actually is implemented by a class
+  Result := Supports(Instance, IID, Intf);
+  if Result then
+  begin
+    if Instance is TObject then
+      Line := TObject(Instance).ClassName;
+    RttiContext := TRttiContext.Create;
+    try
+      RttiType := RttiContext.FindType(IID);
+      if not Assigned(RttiType) then
+        if Assigned(InterfaceTypeInfo) then
+          RttiType := RttiContext.GetType(InterfaceTypeInfo);
+      Line := Format('%s implements %s', [Line, RttiType.Name]);
+      Log(Line);
+    finally
+      RttiContext.Free;
+    end;
   end;
 end;
 
