@@ -11,9 +11,11 @@ uses
 
 type
   TRttiTypeHelper = class helper for TRttiType
+    function GetBestName(): string; virtual;
     function GetUnitName(): string; virtual;
   end;
 
+  /// Find versus Get: Find* might return nil or empty lists, Get* won't.
   TRttiContextHelper = record helper for TRttiContext
     function FindType(const AInterfaceGUID: TGUID): TRttiInterfaceType; overload;
     function FindTypes(const Predicate: TPredicate<TRttiType>): TArray<TRttiType>;
@@ -45,6 +47,15 @@ uses
   System.SysConst,
 {$endif StrictGetType}
   System.Generics.Collections;
+
+function TRttiTypeHelper.GetBestName(): string;
+begin
+  // you cannot ask for QualifiedName on a non-public RttiType
+  if Self.IsPublicType then
+    Result := Self.QualifiedName
+  else
+    Result := Self.Name;
+end;
 
 function TRttiTypeHelper.GetUnitName(): string;
 begin
