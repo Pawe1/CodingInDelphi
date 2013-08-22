@@ -26,9 +26,10 @@ type
   published
     procedure Test_TObjectHelper_ClassHierarchyDepth();
     procedure Test_TRttiContextHelper_FindType();
-    procedure Test_TRttiContextHelper_GetTypes();
+    procedure Test_TRttiContextHelper_FindTypes();
     procedure Test_TRttiContextHelper_FindType_TGUID();
     procedure Test_TRttiContextHelper_GetType_TObject();
+    procedure Test_TRttiTypeHelper_GetBestName();
     procedure Test_TRttiTypeHelper_GetUnitName();
   end;
 
@@ -141,7 +142,7 @@ begin
   end;
 end;
 
-procedure TRttiHelpersTestCase.Test_TRttiContextHelper_GetTypes();
+procedure TRttiHelpersTestCase.Test_TRttiContextHelper_FindTypes();
 const
   NumberOfPublicTypesInThisUnit = 3;
 var
@@ -204,6 +205,37 @@ begin
     RttiType_ByInstance := RttiContext.GetType(Self);
 
     Self.CheckEqualsString(RttiType_ByInstance.QualifiedName, RttiType_ByClass.QualifiedName);
+  finally
+    RttiContext.Free;
+  end;
+end;
+
+procedure TRttiHelpersTestCase.Test_TRttiTypeHelper_GetBestName();
+var
+  BestName: string;
+  RttiContext: TRttiContext;
+  RttiType: TRttiType;
+  TypeName: string;
+  UnitName: string;
+  QualifiedName: string;
+begin
+  RttiContext := TRttiContext.Create();
+  try
+    RttiType := RttiContext.GetType<TPublicClass>();
+    BestName := RttiType.GetBestName();
+    CheckEqualsString(TPublicClass.QualifiedClassName, BestName);
+
+    RttiType := RttiContext.GetType<IPublicInterface>();
+    BestName := RttiType.GetBestName();
+    CheckEqualsString(Self.ClassType.UnitName + '.' + RttiType.Name, BestName);
+
+    RttiType := RttiContext.GetType<TPrivateClass>();
+    BestName := RttiType.GetBestName();
+    CheckEqualsString(TPrivateClass.ClassName, BestName); // no unit prefix: private type
+
+    RttiType := RttiContext.GetType<IPrivateInterface>();
+    BestName := RttiType.GetBestName();
+    CheckEqualsString(RttiType.Name, BestName); // no unit prefix: private type
   finally
     RttiContext.Free;
   end;
