@@ -12,6 +12,7 @@ uses
 type
   TRttiTypeHelper = class helper for TRttiType
     function GetBestName(): string; virtual;
+    function GetProtectionString(): string;
     function GetUnitName(): string; virtual;
   end;
 
@@ -55,6 +56,14 @@ begin
     Result := Self.QualifiedName
   else
     Result := Self.Name;
+end;
+
+function TRttiTypeHelper.GetProtectionString(): string;
+begin
+  if IsPublicType then
+    Result := 'public'
+  else
+    Result := 'private';
 end;
 
 function TRttiTypeHelper.GetUnitName(): string;
@@ -156,3 +165,4 @@ begin
 end;
 
 end.
+
