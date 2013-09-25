@@ -10,6 +10,8 @@ procedure ReportRttiTypes(const RttiContext: TRttiContext; const AInterfaceGUID:
 
 procedure ReportImplementedInterfacesByClass(const RttiContext: TRttiContext; const ClassReference: TClass);
 
+procedure ReportGetTypes(const RttiContext: TRttiContext);
+
 implementation
 
 uses
@@ -137,6 +139,7 @@ begin
     InterfaceTable := CurrentClassReference.GetInterfaceTable;
     if Assigned(InterfaceTable) then
     begin
+      Writeln(Format(' with RTTI name "%s"', [ClassRttiType.GetBestName()]));
       EntryCount := InterfaceTable.EntryCount;
       Writeln(Format(' implements %d interfaces:', [EntryCount]));
       InterfaceTable_Intfs := @InterfaceTable.Entries[EntryCount]; // right after the final Entries entry.
@@ -161,6 +164,23 @@ begin
     CurrentClassReference := CurrentClassReference.ClassParent;
   end;
   Writeln;
+end;
+
+procedure ReportGetTypes(const RttiContext: TRttiContext);
+var
+  RttiTypes: TArray<TRttiType>;
+  RttiType: TRttiType;
+begin
+  RttiTypes := RttiContext.GetTypes();
+  for RttiType in RttiTypes do
+  begin
+    Write(Format('%s best name "%s"', [RttiType.GetProtectionString(), RttiType.GetBestName()]));
+    if RttiType.IsInstance then
+      Writeln(Format(' with QualifiedClassName "%s"', [TRttiInstanceType(RttiType).MetaclassType.QualifiedClassName]))
+    else
+      Writeln;
+
+  end;
 end;
 
 end.

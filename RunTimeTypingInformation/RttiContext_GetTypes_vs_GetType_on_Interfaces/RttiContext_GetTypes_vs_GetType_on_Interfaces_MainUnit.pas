@@ -96,9 +96,13 @@ begin
     Writeln;
     ReportImplementedInterfacesByClass(RttiContext, TPrivateImplementingObject);
     ReportImplementedInterfacesByClass(RttiContext, TPrivateImplementingObjectWithoutTypeInfoCalls);
+
+    Writeln;
+    ReportGetTypes(RttiContext);
   finally
     RttiContext.Free;
   end;
 end;
 
 end.
+
