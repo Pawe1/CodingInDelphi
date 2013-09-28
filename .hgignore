@@ -1,0 +1,7 @@
+/__history/
+/*/*.dcu
+/*/*.exe
+/*/*.local
+/*/*.identcache
+syntax: glob
+dunit.ini
