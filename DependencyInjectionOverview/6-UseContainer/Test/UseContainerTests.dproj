@@ -97,7 +97,6 @@
         <DCCReference Include="TestuOrderEntry.pas"/>
         <DCCReference Include="TestuOrderValidator.pas"/>
         <DCCReference Include="..\uOrder.pas"/>
-        <DCCReference Include="uOrderMocks.pas"/>
         <DCCReference Include="TestuOrderProcessor.pas"/>
         <DCCReference Include="..\uOrderProcessor.pas"/>
         <DCCReference Include="..\uOrderInterfaces.pas"/>
