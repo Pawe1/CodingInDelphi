@@ -19,7 +19,7 @@ function TOrderEntry.EnterOrderIntoDatabase(aOrder: TOrder): Boolean;
 begin
   Result := Assigned(aOrder);
   {$IFDEF CONSOLEAPP}
-  Writeln('Entering order into the database....');
+  Writeln('Entering order into the database, at a cost of $1....');
   {$ENDIF}
 end;
 
