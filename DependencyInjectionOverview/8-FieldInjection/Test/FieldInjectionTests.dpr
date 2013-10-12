@@ -22,7 +22,6 @@ uses
   TestuOrderEntry in 'TestuOrderEntry.pas',
   TestuOrderValidator in 'TestuOrderValidator.pas',
   uOrder in '..\uOrder.pas',
-  uOrderMocks in 'uOrderMocks.pas',
   TestuOrderProcessor in 'TestuOrderProcessor.pas',
   uOrderProcessor in '..\uOrderProcessor.pas',
   uOrderInterfaces in '..\uOrderInterfaces.pas';
