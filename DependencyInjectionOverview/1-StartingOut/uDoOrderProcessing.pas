@@ -15,9 +15,9 @@ var
   Order: TOrder;
   OrderProcessor: TOrderProcessor;
 begin
-  Order := TOrder.Create;
+  Order := TOrder.Create();
   try
-    OrderProcessor := TOrderProcessor.Create;
+    OrderProcessor := TOrderProcessor.Create();
     try
       if OrderProcessor.ProcessOrder(Order) then
       begin

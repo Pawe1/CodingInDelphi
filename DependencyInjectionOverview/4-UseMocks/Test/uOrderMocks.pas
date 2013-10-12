@@ -3,30 +3,27 @@ unit uOrderMocks;
 interface
 
 uses
-  uOrderEntry, uOrder, uOrderValidator;
+  uOrder,
+  uOrderEntry,
+  uOrderValidator;
 
 type
   TMockOrderEntry = class(TInterfacedObject, IOrderEntry)
-    function EnterOrderIntoDatabase(aOrder: TOrder): Boolean;
+    function EnterOrderIntoDatabase(const aOrder: TOrder): Boolean;
   end;
 
   TMockOrderValidator = class(TInterfacedObject, IOrderValidator)
-    function ValidateOrder(aOrder: TOrder): Boolean;
+    function ValidateOrder(const aOrder: TOrder): Boolean;
   end;
 
 implementation
 
-
-{ TMockOrderEntry }
-
-function TMockOrderEntry.EnterOrderIntoDatabase(aOrder: TOrder): Boolean;
+function TMockOrderEntry.EnterOrderIntoDatabase(const aOrder: TOrder): Boolean;
 begin
   Result := True;
 end;
 
-{ TMockOrderValidator }
-
-function TMockOrderValidator.ValidateOrder(aOrder: TOrder): Boolean;
+function TMockOrderValidator.ValidateOrder(const aOrder: TOrder): Boolean;
 begin
   Result := True;
 end;

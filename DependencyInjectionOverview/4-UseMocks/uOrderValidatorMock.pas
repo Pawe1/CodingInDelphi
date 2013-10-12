@@ -9,14 +9,12 @@ uses
 type
   TOrderValidatorMock = class(TInterfacedObject, IOrderValidator)
   public
-    function ValidateOrder(aOrder: TOrder): Boolean;
+    function ValidateOrder(const aOrder: TOrder): Boolean;
   end;
 
 implementation
 
-{ TOrderValidatorMock }
-
-function TOrderValidatorMock.ValidateOrder(aOrder: TOrder): Boolean;
+function TOrderValidatorMock.ValidateOrder(const aOrder: TOrder): Boolean;
 begin
   Result := True;
   {$IFDEF CONSOLEAPP}

@@ -1,14 +1,4 @@
 program StartingOutTests;
-{
-
-  Delphi DUnit Test Project
-  -------------------------
-  This project contains the DUnit test framework and the GUI/Console test runners.
-  Add "CONSOLE_TESTRUNNER" to the conditional defines entry in the project options
-  to use the console test runner.  Otherwise the GUI test runner will be used by
-  default.
-
-}
 
 {$IFDEF CONSOLE_TESTRUNNER}
 {$APPTYPE CONSOLE}
@@ -19,13 +9,13 @@ uses
   TestFramework,
   GUITestRunner,
   TextTestRunner,
-  uOrderValidator in '..\uOrderValidator.pas',
-  TestuOrderEntry in 'TestuOrderEntry.pas',
-  TestuOrderValidator in 'TestuOrderValidator.pas',
   uOrder in '..\uOrder.pas',
   uOrderEntry in '..\uOrderEntry.pas',
-  TestuOrderProcessor in 'TestuOrderProcessor.pas',
-  uOrderProcessor in '..\uOrderProcessor.pas';
+  TestuOrderEntry in 'TestuOrderEntry.pas',
+  uOrderValidator in '..\uOrderValidator.pas',
+  TestuOrderValidator in 'TestuOrderValidator.pas',
+  uOrderProcessor in '..\uOrderProcessor.pas',
+  TestuOrderProcessor in 'TestuOrderProcessor.pas';
 
 {R *.RES}
 
@@ -37,4 +27,3 @@ begin
   else
     GUITestRunner.RunRegisteredTests;
 end.
-

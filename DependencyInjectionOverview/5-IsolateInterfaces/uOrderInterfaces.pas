@@ -3,19 +3,19 @@ unit uOrderInterfaces;
 interface
 
 uses
-     uOrder;
+  uOrder;
 
 type
   IOrderValidator = interface
-    function ValidateOrder(aOrder: TOrder): Boolean;
+    function ValidateOrder(const aOrder: TOrder): Boolean;
   end;
 
   IOrderEntry = interface
-    function EnterOrderIntoDatabase(aOrder: TOrder): Boolean;
+    function EnterOrderIntoDatabase(const aOrder: TOrder): Boolean;
   end;
 
   IOrderProcessor = interface
-    function ProcessOrder(aOrder: TOrder): Boolean;
+    function ProcessOrder(const aOrder: TOrder): Boolean;
   end;
 
 implementation

@@ -1,5 +1,15 @@
 Parts of this code are explained in <http://www.nickhodges.com/post/Getting-Giddy-with-Dependency-Injection-and-Delphi-Spring-6-Dont-even-have-a-constructor.aspx>
 
+Note that when using the Spring4D framework in these examples, these directories need to be added to your search path:
+
+    $(Spring)\Source\Base;
+    $(Spring)\Source\Base\Collections;
+    $(Spring)\Source\Base\Reflection;
+    $(Spring)\Source\Core\Container;
+    $(Spring)\Source\Core\Services
+
+Where `$(Spring)` is an environment variable pointing to the root of the Spring4D sources.
+
 # 1-StartingOut\StartingOut.dproj
 
 The classic way that most applications work: lots of dependencies.
@@ -7,12 +17,20 @@ The classic way that most applications work: lots of dependencies.
 0. unit `uDoOrderProcessing` has a method `DoOrderProcessing` that instantiates a `TOrder` which gets processed by a `TOrderProcessor`.
 0. unit `uOrderProcessor` implements `TOrderProcessor` which has a hard-coded dependency on `TOrderValidator` from unit `uOrderValidator` and `TOrderEntry` from unit `uOrderEntry`.
 
+The output is this, so processing an order always costs $1:
+
+    Validating Order....
+    Entering order into the database, at a cost of $1.... 
+    Order has been processed....
+    Order successfully processed....
+
 # 2-MoveToInterfaces\MovingToInterfaces.dproj
 
 0. in unit `uOrderEntry`, add an `IOrderEntry` interface containing the public methods of the `TOrderEntry` class, then make `TOrderEntry` derive from `TInterfacedObject` and have it implement `IOrderEntry`.
 0. in unit `uOrderValidator`, add an `IOrderValidator` interface containing the public methods of the `TOrderValidator` class, then make `TOrderValidator` derive from `TInterfacedObject` and have it implement `IOrderValidator`.
 0. in unit `uOrderProcessor`, add an `IOrderProcessor` interface containing the public methods of the `TOrderProcessor` class, then make `TOrderProcessor` derive from `TInterfacedObject` and have it implement `IOrderProcessor`.
 0. in unit `uOrderProcessor`, make two more changes: replace the class types of `FOrderValidator` and `FOrderEntry` with the interface types. Then remove destructor `TOrderProcessor.Destroy`.
+0. in unit `uDoOrderProcessing`, replace the type `TOrderProcessor` of `OrderProcessor` by `IOrderProcessor`, then remove the `OrderProcessor.Free`  and the `try/finally/end` block it is part of.
 
 NB: You can use another ancestor than `TInterfacedObject` as long as it implements `IInterface`
 
@@ -21,17 +39,17 @@ At first sight, this might look like a pointless exercise, but it makes it much 
 # 3-ConstructorInjection\ConstructorInjection.dproj
 
 0. in unit `uOrderProcessor`, in constructor `TOrderProcessor.Create` add the parameters `aOrderValidator: IOrderValidator` and `aOrderEntry: IOrderEntry`. Then assign those to the fields `FOrderValidator` and `FOrderEntry`, and remove the creation of `TOrderValidator` and `TOrderEntry` instances.
-0. in unit `uDoOrderProcessing`, add the `TOrderValidator.Create, TOrderEntry.Create` instance creations to the `TOrderProcessor.Create` call.
+0. in unit `uDoOrderProcessing`, add the units `uOrderValidator` and `uOrderEntry` to the implementation uses list.
+0. in unit `uDoOrderProcessing`, in method `DoOrderProcessing` add local variables `OrderValidator: IOrderValidator` and `OrderEntry: IOrderEntry`.
+0. in unit `uDoOrderProcessing`, in method `DoOrderProcessing` initialize those variables using `OrderValidator := TOrderValidator.Create` and `OrderEntry := TOrderEntry.Create`, then pass them in `TOrderProcessor.Create(OrderValidator, OrderEntry)`. 
 
-????
+Note you can do without the intermediate variables, but step 4 (Mocks) will make an important aspect of that clear.
 
-0. in unit `uDoOrderProcessing`, change the type of `OrderProcessor` back from `IOrderProcessor` to `TOrderProcessor` and add back the `try/finally/free/end` block.
-
-This way, the `TOrderProcessor` class gets the dependencies injected at run-time.
+The above changes will have the `TOrderProcessor` class gets the dependencies injected at run-time.
 
 # 4-UseMocks\UseMocks.dproj
 
-This is a small side-step from step 3: Mocks are very useful for unit testing, but usually not found in your production applications. 
+This is a small and important side-step from step 3: Mocks are very useful for unit testing, but usually not found in your production applications. 
 
 Add unit `uOrderEntryMock` with a class `TOrderEntryMock` that is like `TOrderEntry`, but has a method `TOrderEntryMock.EnterOrderIntoDatabase` that has an implementation like this:
   
@@ -49,10 +67,19 @@ Add unit `uOrderValidatorMock` with a class `TOrderValidatorMock` that is like `
 
 Change unit `uDoOrderProcessing`:
 
-0. in the uses list, replace units `uOrderValidator` and `uOrderEntry` with `uOrderValidatorMock` and `uOrderEntryMock`
+0. in the implementation uses list, add the units `uOrderValidatorMock` and `uOrderEntryMock`
 0. replace the creation parameters with `TOrderValidatorMock.Create, TOrderEntryMock.Create`
 
 This shows one of the big advantages of dependency injection: you can switch the dependencies.
+
+And you don't get the $1 hit any more:
+
+    TOrderValidatorMock.ValidateOrder called
+    TOrderEntryMock.EnterOrderIntoDatabase called
+    Order has been processed....
+    Order successfully processed....
+
+But it also shows an important flaw that we will solve in step 5: still the units `uOrderValidator` and `uOrderEntry` are needed because they contain the interface definitions `IOrderValidator` and `IOrderEntry`.
 
 # 5-IsolateInterfaces\IsolateInterfaces.dproj
 
@@ -66,9 +93,7 @@ The changes here are against step 3:
 
 This isolates the interfaces from the units implementing them, further isolating them and further reducing dependencies between the implementation units.
 
-##### Note: this line should move within the try block:
-
-`  OrderProcessor := TOrderProcessor.Create(TOrderValidator.Create, TOrderEntry.Create);`
+With the above changes, the changes for step 4 would be simpler and eliminate the needs for units `uOrderValidator` and `uOrderEntry`.
 
 # 6-UseContainer\UseContainer.dproj
 

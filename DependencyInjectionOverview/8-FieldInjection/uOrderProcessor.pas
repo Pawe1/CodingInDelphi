@@ -9,13 +9,13 @@ uses
 
 type
   TOrderProcessor = class(TInterfacedObject, IOrderProcessor)
-  private
+  strict private
     [Inject]
     FOrderValidator: IOrderValidator;
     [Inject]
     FOrderEntry: IOrderEntry;
   public
-    function ProcessOrder(aOrder: TOrder): Boolean;
+    function ProcessOrder(const aOrder: TOrder): Boolean;
   end;
 
 implementation
@@ -23,9 +23,7 @@ implementation
 uses
   Spring.Container;
 
-{ TOrderProcessor }
-
-function TOrderProcessor.ProcessOrder(aOrder: TOrder): Boolean;
+function TOrderProcessor.ProcessOrder(const aOrder: TOrder): Boolean;
 var
   OrderIsValid: Boolean;
 begin
@@ -42,6 +40,5 @@ begin
 end;
 
 initialization
-  GlobalContainer.RegisterType<TOrderProcessor>;
-
+  GlobalContainer.RegisterType<TOrderProcessor>();
 end.

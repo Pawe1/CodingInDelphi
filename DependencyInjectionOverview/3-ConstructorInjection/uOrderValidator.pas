@@ -7,19 +7,17 @@ uses
 
 type
   IOrderValidator = interface
-    function ValidateOrder(aOrder: TOrder): Boolean;
+    function ValidateOrder(const aOrder: TOrder): Boolean;
   end;
 
   TOrderValidator = class(TInterfacedObject, IOrderValidator)
   public
-    function ValidateOrder(aOrder: TOrder): Boolean;
+    function ValidateOrder(const aOrder: TOrder): Boolean;
   end;
 
 implementation
 
-{ TOrderValidator }
-
-function TOrderValidator.ValidateOrder(aOrder: TOrder): Boolean;
+function TOrderValidator.ValidateOrder(const aOrder: TOrder): Boolean;
 begin
   Result := Assigned(aOrder);
   {$IFDEF CONSOLEAPP}

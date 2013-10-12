@@ -10,14 +10,12 @@ uses
 type
   TOrderEntryMock = class(TInterfacedObject, IOrderEntry)
   public
-    function EnterOrderIntoDatabase(aOrder: TOrder): Boolean;
+    function EnterOrderIntoDatabase(const aOrder: TOrder): Boolean;
   end;
 
 implementation
 
-{ TOrderEntryMock }
-
-function TOrderEntryMock.EnterOrderIntoDatabase(aOrder: TOrder): Boolean;
+function TOrderEntryMock.EnterOrderIntoDatabase(const aOrder: TOrder): Boolean;
 begin
   Result := True;
   {$IFDEF CONSOLEAPP}

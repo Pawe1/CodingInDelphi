@@ -11,23 +11,21 @@ uses
 
 type
   TOrderProcessor = class(TInterfacedObject, IOrderProcessor)
-  private
+  strict private
     FOrderValidator: IOrderValidator;
     FOrderEntry: IOrderEntry;
   public
-    constructor Create(aOrderValidator: IOrderValidator; aOrderEntry: IOrderEntry);
-    function ProcessOrder(aOrder: TOrder): Boolean;
+    constructor Create(const aOrderValidator: IOrderValidator; const aOrderEntry: IOrderEntry);
+    function ProcessOrder(const aOrder: TOrder): Boolean;
   end;
 
-{ TOrderProcessor }
-
-constructor TOrderProcessor.Create(aOrderValidator: IOrderValidator; aOrderEntry: IOrderEntry);
+constructor TOrderProcessor.Create(const aOrderValidator: IOrderValidator; const aOrderEntry: IOrderEntry);
 begin
   FOrderValidator := aOrderValidator;
   FOrderEntry := aOrderEntry;
 end;
 
-function TOrderProcessor.ProcessOrder(aOrder: TOrder): Boolean;
+function TOrderProcessor.ProcessOrder(const aOrder: TOrder): Boolean;
 var
   OrderIsValid: Boolean;
 begin
@@ -44,6 +42,5 @@ begin
 end;
 
 initialization
-  GlobalContainer.RegisterType<TOrderProcessor>;
-
+  GlobalContainer.RegisterType<TOrderProcessor>();
 end.
