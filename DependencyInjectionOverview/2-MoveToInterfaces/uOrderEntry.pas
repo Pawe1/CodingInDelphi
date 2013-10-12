@@ -7,19 +7,17 @@ uses
 
 type
   IOrderEntry = interface
-    function EnterOrderIntoDatabase(aOrder: TOrder): Boolean;
+    function EnterOrderIntoDatabase(const aOrder: TOrder): Boolean;
   end;
 
   TOrderEntry = class(TInterfacedObject, IOrderEntry)
   public
-    function EnterOrderIntoDatabase(aOrder: TOrder): Boolean;
+    function EnterOrderIntoDatabase(const aOrder: TOrder): Boolean;
   end;
 
 implementation
 
-{ TOrderEntry }
-
-function TOrderEntry.EnterOrderIntoDatabase(aOrder: TOrder): Boolean;
+function TOrderEntry.EnterOrderIntoDatabase(const aOrder: TOrder): Boolean;
 begin
   Result := Assigned(aOrder);
   {$IFDEF CONSOLEAPP}

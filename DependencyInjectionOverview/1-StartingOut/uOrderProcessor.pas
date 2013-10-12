@@ -9,23 +9,21 @@ uses
 
 type
   TOrderProcessor = class
-  private
+  strict private
     FOrderValidator: TOrderValidator;
     FOrderEntry: TOrderEntry;
   public
     constructor Create;
     destructor Destroy; override;
-    function ProcessOrder(aOrder: TOrder): Boolean;
+    function ProcessOrder(const aOrder: TOrder): Boolean;
   end;
 
 implementation
 
-{ TOrderProcessor }
-
-constructor TOrderProcessor.Create;
+constructor TOrderProcessor.Create();
 begin
-  FOrderValidator := TOrderValidator.Create;
-  FOrderEntry := TOrderEntry.Create;
+  FOrderValidator := TOrderValidator.Create();
+  FOrderEntry := TOrderEntry.Create();
 end;
 
 destructor TOrderProcessor.Destroy;
@@ -35,7 +33,7 @@ begin
   inherited;
 end;
 
-function TOrderProcessor.ProcessOrder(aOrder: TOrder): Boolean;
+function TOrderProcessor.ProcessOrder(const aOrder: TOrder): Boolean;
 var
   OrderIsValid: Boolean;
 begin

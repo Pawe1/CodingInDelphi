@@ -15,9 +15,9 @@ var
   Order: TOrder;
   OrderProcessor: IOrderProcessor;
 begin
-  Order := TOrder.Create;
+  Order := TOrder.Create();
   try
-    OrderProcessor := TOrderProcessor.Create;
+    OrderProcessor := TOrderProcessor.Create();
     if OrderProcessor.ProcessOrder(Order) then
     begin
       {$IFDEF CONSOLEAPP}

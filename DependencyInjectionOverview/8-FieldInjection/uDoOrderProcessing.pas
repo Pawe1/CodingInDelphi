@@ -7,20 +7,20 @@ procedure DoOrderProcessing;
 implementation
 
 uses
-  Spring.Container,
-  Spring.Services,
   uOrder,
-  uOrderInterfaces;
+  uOrderInterfaces,
+  Spring.Container,
+  Spring.Services;
 
 procedure DoOrderProcessing;
 var
   Order: TOrder;
   OrderProcessor: IOrderProcessor;
 begin
-  GlobalContainer.Build;
-  Order := TOrder.Create;
+  GlobalContainer.Build();
+  Order := TOrder.Create();
   try
-    OrderProcessor := ServiceLocator.GetService<IOrderProcessor>;
+    OrderProcessor := ServiceLocator.GetService<IOrderProcessor>();
     if OrderProcessor.ProcessOrder(Order) then
     begin
       {$IFDEF CONSOLEAPP}

@@ -10,16 +10,22 @@ uses
   uOrder,
   uOrderProcessor,
   uOrderValidatorMock,
-  uOrderEntryMock;
+  uOrderEntryMock,
+  uOrderValidator,
+  uOrderEntry;
 
 procedure DoOrderProcessing;
 var
   Order: TOrder;
   OrderProcessor: IOrderProcessor;
+  OrderValidator: IOrderValidator;
+  OrderEntry: IOrderEntry;
 begin
-  Order := TOrder.Create;
+  Order := TOrder.Create();
+  OrderValidator := TOrderValidatorMock.Create();
+  OrderEntry := TOrderEntryMock.Create();
   try
-    OrderProcessor := TOrderProcessor.Create(TOrderValidatorMock.Create, TOrderEntryMock.Create);
+    OrderProcessor := TOrderProcessor.Create(OrderValidator, OrderEntry);
     if OrderProcessor.ProcessOrder(Order) then
     begin
       {$IFDEF CONSOLEAPP}

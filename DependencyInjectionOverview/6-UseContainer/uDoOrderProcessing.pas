@@ -20,11 +20,11 @@ var
   OrderValidator: IOrderValidator;
   OrderEntry: IOrderEntry;
 begin
-  GlobalContainer.Build;
-  Order := TOrder.Create;
+  GlobalContainer.Build();
+  Order := TOrder.Create();
   try
-    OrderValidator := ServiceLocator.GetService<IOrderValidator>;
-    OrderEntry := ServiceLocator.GetService<IOrderEntry>;
+    OrderValidator := ServiceLocator.GetService<IOrderValidator>();
+    OrderEntry := ServiceLocator.GetService<IOrderEntry>();
     OrderProcessor := TOrderProcessor.Create(OrderValidator, OrderEntry);
     if OrderProcessor.ProcessOrder(Order) then
     begin

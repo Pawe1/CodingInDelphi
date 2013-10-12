@@ -19,9 +19,9 @@ var
   OrderValidator: IOrderValidator;
   OrderEntry: IOrderEntry;
 begin
-  Order := TOrder.Create;
-  OrderValidator := TOrderValidator.Create;
-  OrderEntry := TOrderEntry.Create;
+  Order := TOrder.Create();
+  OrderValidator := TOrderValidator.Create();
+  OrderEntry := TOrderEntry.Create();
   try
     OrderProcessor := TOrderProcessor.Create(OrderValidator, OrderEntry);
     if OrderProcessor.ProcessOrder(Order) then
