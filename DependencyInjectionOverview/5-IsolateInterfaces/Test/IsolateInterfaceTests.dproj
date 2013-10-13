@@ -93,14 +93,16 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="..\uOrderValidator.pas"/>
         <DCCReference Include="TestuOrderEntry.pas"/>
         <DCCReference Include="TestuOrderValidator.pas"/>
         <DCCReference Include="..\uOrder.pas"/>
-        <DCCReference Include="..\uOrderEntry.pas"/>
         <DCCReference Include="TestuOrderProcessor.pas"/>
         <DCCReference Include="..\uOrderProcessor.pas"/>
         <DCCReference Include="..\uOrderInterfaces.pas"/>
+        <DCCReference Include="..\uOrderEntry.pas"/>
+        <DCCReference Include="uOrderEntryMock.pas"/>
+        <DCCReference Include="..\uOrderValidator.pas"/>
+        <DCCReference Include="uOrderValidatorMock.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

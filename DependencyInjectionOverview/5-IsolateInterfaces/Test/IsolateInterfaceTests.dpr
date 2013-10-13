@@ -19,14 +19,16 @@ uses
   TestFramework,
   GUITestRunner,
   TextTestRunner,
-  uOrderValidator in '..\uOrderValidator.pas',
   TestuOrderEntry in 'TestuOrderEntry.pas',
   TestuOrderValidator in 'TestuOrderValidator.pas',
   uOrder in '..\uOrder.pas',
-  uOrderEntry in '..\uOrderEntry.pas',
   TestuOrderProcessor in 'TestuOrderProcessor.pas',
   uOrderProcessor in '..\uOrderProcessor.pas',
-  uOrderInterfaces in '..\uOrderInterfaces.pas';
+  uOrderInterfaces in '..\uOrderInterfaces.pas',
+  uOrderEntry in '..\uOrderEntry.pas',
+  uOrderEntryMock in 'uOrderEntryMock.pas',
+  uOrderValidator in '..\uOrderValidator.pas',
+  uOrderValidatorMock in 'uOrderValidatorMock.pas';
 
 {R *.RES}
 

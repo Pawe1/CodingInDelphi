@@ -20,8 +20,8 @@ implementation
 
 uses
   uOrder,
-  uOrderValidator,
-  uOrderEntry,
+  uOrderValidatorMock,
+  uOrderEntryMock,
   uOrderProcessor;
 
 procedure TestTOrderProcessor.SetUp();
@@ -29,8 +29,8 @@ var
   OrderEntry: IOrderEntry;
   OrderValidator: IOrderValidator;
 begin
-  OrderValidator := TOrderValidator.Create();
-  OrderEntry := TOrderEntry.Create();
+  OrderValidator := TOrderValidatorMock.Create();
+  OrderEntry := TOrderEntryMock.Create();
   FOrderProcessor := TOrderProcessor.Create(OrderValidator, OrderEntry);
 end;
 
