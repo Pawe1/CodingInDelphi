@@ -20,17 +20,18 @@ implementation
 
 uses
   uOrder,
-  uOrderEntry,
   uOrderValidator,
-  uOrderMocks;
+  uOrderEntry,
+  uOrderValidatorMock,
+  uOrderEntryMock;
 
 procedure TestTOrderProcessor.SetUp();
 var
   OrderEntry: IOrderEntry;
   OrderValidator: IOrderValidator;
 begin
-  OrderValidator := TMockOrderValidator.Create();
-  OrderEntry := TMockOrderEntry.Create();
+  OrderValidator :=  TOrderValidatorMock.Create();
+  OrderEntry := TOrderEntryMock.Create();
   FOrderProcessor := TOrderProcessor.Create(OrderValidator, OrderEntry);
 end;
 

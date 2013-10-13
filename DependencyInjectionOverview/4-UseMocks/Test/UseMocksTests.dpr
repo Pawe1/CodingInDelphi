@@ -26,7 +26,8 @@ uses
   uOrderEntry in '..\uOrderEntry.pas',
   TestuOrderProcessor in 'TestuOrderProcessor.pas',
   uOrderProcessor in '..\uOrderProcessor.pas',
-  uOrderMocks in 'uOrderMocks.pas';
+  uOrderEntryMock in 'uOrderEntryMock.pas',
+  uOrderValidatorMock in 'uOrderValidatorMock.pas';
 
 {R *.RES}
 

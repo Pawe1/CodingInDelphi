@@ -7,10 +7,10 @@ uses
   uDoOrderProcessing in 'uDoOrderProcessing.pas',
   uOrder in 'uOrder.pas',
   uOrderEntry in 'uOrderEntry.pas',
-  uOrderEntryMock in 'uOrderEntryMock.pas',
   uOrderProcessor in 'uOrderProcessor.pas',
   uOrderValidator in 'uOrderValidator.pas',
-  uOrderValidatorMock in 'uOrderValidatorMock.pas';
+  uOrderEntryMock in 'Test\uOrderEntryMock.pas',
+  uOrderValidatorMock in 'Test\uOrderValidatorMock.pas';
 
 begin
   try

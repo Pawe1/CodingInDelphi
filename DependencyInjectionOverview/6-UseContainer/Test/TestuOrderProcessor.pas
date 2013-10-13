@@ -20,7 +20,6 @@ implementation
 
 uses
   uOrder,
-  uOrderMocks,
   uOrderProcessor,
   Spring.Container,
   Spring.Services;
