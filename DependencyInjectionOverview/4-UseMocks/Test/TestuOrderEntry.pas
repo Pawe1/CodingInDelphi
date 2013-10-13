@@ -29,10 +29,12 @@ end;
 procedure TestTOrderEntry.TestEnterOrderIntoDatabase;
 var
   Order: TOrder;
+  ResultValue: Boolean;
 begin
   Order := TOrder.Create();
   try
-    Check(FOrderEntry.EnterOrderIntoDatabase(Order));
+    ResultValue := FOrderEntry.EnterOrderIntoDatabase(Order);
+    Check(ResultValue);
   finally
     Order.Free;
   end;

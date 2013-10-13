@@ -39,10 +39,12 @@ end;
 procedure TestTOrderProcessor.TestProcessOrder();
 var
   Order: TOrder;
+  ResultValue: Boolean;
 begin
   Order := TOrder.Create();
   try
-    Check(FOrderProcessor.ProcessOrder(Order));
+    ResultValue := FOrderProcessor.ProcessOrder(Order);
+    Check(ResultValue);
   finally
     Order.Free;
   end;
