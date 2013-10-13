@@ -37,11 +37,13 @@ end;
 procedure TestTOrderProcessor.TestProcessOrder;
 var
   Order: TOrder;
+  ResultValue: Boolean;
 begin
   Order := TOrder.Create();
   try
     // We can check success, but...
-    Check(FOrderProcessor.ProcessOrder(Order));
+    ResultValue := FOrderProcessor.ProcessOrder(Order);
+    Check(ResultValue);
     // how do we check that the order really made it to the database?
     // Or do we even want to....?
   finally
