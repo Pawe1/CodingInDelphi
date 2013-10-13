@@ -29,8 +29,8 @@ end;
 
 procedure TestTOrderValidator.TestValidateOrder;
 var
-  ReturnValue: Boolean;
   Order: TOrder;
+  ReturnValue: Boolean;
 begin
   Order := TOrder.Create();
   try
