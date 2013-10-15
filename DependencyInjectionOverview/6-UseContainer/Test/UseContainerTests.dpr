@@ -24,7 +24,13 @@ uses
   uOrder in '..\uOrder.pas',
   TestuOrderProcessor in 'TestuOrderProcessor.pas',
   uOrderProcessor in '..\uOrderProcessor.pas',
-  uOrderInterfaces in '..\uOrderInterfaces.pas';
+  uOrderInterfaces in '..\uOrderInterfaces.pas',
+  uOrderEntry in '..\uOrderEntry.pas',
+  uOrderValidator in '..\uOrderValidator.pas',
+  uOrderValidatorMock in 'uOrderValidatorMock.pas',
+  uOrderEntryMock in 'uOrderEntryMock.pas',
+  uRegisterMocks in 'uRegisterMocks.pas',
+  uRTTI in 'uRTTI.pas';
 
 {R *.RES}
 

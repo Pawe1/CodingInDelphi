@@ -2,20 +2,21 @@ unit uOrderEntry;
 
 interface
 
+implementation
+
 uses
   uOrder,
-  uOrderInterfaces;
+  uOrderInterfaces,
+  Spring.Container;
 
 type
+  // Moving the `TOrderEntry` to the `implementation` section might sound like a smart idea, but it is not:
+  // The only way to ever reach `TOrderEntry` reach is through the `GlobalContainer` (using `ServiceLocator`).
+  // So you now are coupled to the DI framework which contradicts what we want to do: decoupling.
   TOrderEntry = class(TInterfacedObject, IOrderEntry)
   public
     function EnterOrderIntoDatabase(const aOrder: TOrder): Boolean;
   end;
-
-implementation
-
-uses
-  Spring.Container;
 
 function TOrderEntry.EnterOrderIntoDatabase(const aOrder: TOrder): Boolean;
 begin
