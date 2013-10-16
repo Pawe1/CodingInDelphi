@@ -11,14 +11,16 @@ type
   strict private
     FOrderProcessor: IOrderProcessor;
   strict protected
-    procedure TestOrderEntryIsMock(const FOrderEntry: IOrderEntry); virtual;
-    procedure TestOrderValidatorIsMock(const FOrderValidator: IOrderValidator); virtual;
+    procedure TestInterfaceImplementedByClass(const FInterface: IInterface; const ClassType: TClass; const
+        InstanceDescription: string); virtual;
+    procedure TestOrderEntryIsClass(const FOrderEntry: IOrderEntry; const ClassType: TClass); virtual;
+    procedure TestOrderValidatorIsClass(const FOrderValidator: IOrderValidator; const ClassType: TClass); virtual;
   public
     procedure SetUp(); override;
   published
-    procedure TestOrderEntryIsMock_ServiceLocator();
+    procedure TestOrderEntryIsRegular_ServiceLocator();
     procedure TestOrderEntryIsMock_ServiceLocator_TOrderEntryMockServiceName();
-    procedure TestOrderValidatorIsMock_ServiceLocator();
+    procedure TestOrderValidatorIsRegular_ServiceLocator();
     procedure TestOrderValidatorIsMock_ServiceLocator_TOrderValidatorMockServiceName();
     procedure TestProcessOrder();
   end;
@@ -28,7 +30,9 @@ implementation
 uses
   System.SysUtils,
   uOrder,
+  uOrderEntry,
   uOrderEntryMock,
+  uOrderValidator,
   uOrderValidatorMock,
   uOrderProcessor,
   Spring.Container,
@@ -60,60 +64,62 @@ begin
   FOrderProcessor := TOrderProcessor.Create(FOrderValidator, FOrderEntry);
 end;
 
-procedure TestTOrderProcessor.TestOrderEntryIsMock(const FOrderEntry: IOrderEntry);
+procedure TestTOrderProcessor.TestInterfaceImplementedByClass(const FInterface: IInterface; const ClassType: TClass;
+    const InstanceDescription: string);
 var
-  OrderEntry: TObject;
+  Instance: TObject;
 begin
-  OrderEntry := FOrderEntry as TObject; // as of Delphi 2010, you can do this; see http://stackoverflow.com/questions/4138211/how-to-cast-a-interface-to-a-object-in-delphi/11167316#11167316
-  Check(OrderEntry.InheritsFrom(TOrderEntryMock),
-    Format('OrderEntry class "%s" does not inherit from "%s"', [OrderEntry.QualifiedClassName, TOrderEntryMock.QualifiedClassName]));
+  Instance := FInterface as TObject; // as of Delphi 2010, you can do this; see http://stackoverflow.com/questions/4138211/how-to-cast-a-interface-to-a-object-in-delphi/11167316#11167316
+  Check(Instance.InheritsFrom(ClassType),
+    Format('%s class "%s" does not inherit from "%s"', [InstanceDescription, Instance.QualifiedClassName, ClassType.QualifiedClassName]));
 end;
 
-procedure TestTOrderProcessor.TestOrderEntryIsMock_ServiceLocator();
+procedure TestTOrderProcessor.TestOrderEntryIsClass(const FOrderEntry: IOrderEntry; const ClassType: TClass);
+begin
+  TestInterfaceImplementedByClass(FOrderEntry, ClassType, 'OrderEntry');
+end;
+
+procedure TestTOrderProcessor.TestOrderEntryIsRegular_ServiceLocator();
 var
   FOrderEntry: IOrderEntry;
 begin
 // Note that going through the ServiceLocator without the names will give you the regular implementations,
 // which you want for the normal business code still to work:
   FOrderEntry := ServiceLocator.GetService<IOrderEntry>();
-  TestOrderEntryIsMock(FOrderEntry);
+  TestOrderEntryIsClass(FOrderEntry, TOrderEntry);
 end;
 
 procedure TestTOrderProcessor.TestOrderEntryIsMock_ServiceLocator_TOrderEntryMockServiceName();
 var
   FOrderEntry: IOrderEntry;
 begin
-// But retrieving them with their unique names gives back the Mock classes:
+// Retrieving the instances with the unique service names gives back the Mock classes:
   FOrderEntry := ServiceLocator.GetService<IOrderEntry>(RegisterMocks.TOrderEntryMockServiceName);
-  TestOrderEntryIsMock(FOrderEntry);
+  TestOrderEntryIsClass(FOrderEntry, TOrderEntryMock);
 end;
 
-procedure TestTOrderProcessor.TestOrderValidatorIsMock(const FOrderValidator: IOrderValidator);
-var
-  OrderValidator: TObject;
+procedure TestTOrderProcessor.TestOrderValidatorIsClass(const FOrderValidator: IOrderValidator; const ClassType: TClass);
 begin
-  OrderValidator := FOrderValidator as TObject; // as of Delphi 2010, you can do this; see http://stackoverflow.com/questions/4138211/how-to-cast-a-interface-to-a-object-in-delphi/11167316#11167316
-  Check(OrderValidator.InheritsFrom(TOrderValidatorMock),
-    Format('OrderEntry class "%s" does not inherit from "%s"', [OrderValidator.QualifiedClassName, TOrderValidatorMock.QualifiedClassName]));
+  TestInterfaceImplementedByClass(FOrderValidator, ClassType, 'OrderValidator');
 end;
 
-procedure TestTOrderProcessor.TestOrderValidatorIsMock_ServiceLocator();
+procedure TestTOrderProcessor.TestOrderValidatorIsRegular_ServiceLocator();
 var
   FOrderValidator: IOrderValidator;
 begin
 // Note that going through the ServiceLocator without the names will give you the regular implementations,
 // which you want for the normal business code still to work:
   FOrderValidator := ServiceLocator.GetService<IOrderValidator>();
-  TestOrderValidatorIsMock(FOrderValidator);
+  TestOrderValidatorIsClass(FOrderValidator, TOrderValidator);
 end;
 
 procedure TestTOrderProcessor.TestOrderValidatorIsMock_ServiceLocator_TOrderValidatorMockServiceName();
 var
   FOrderValidator: IOrderValidator;
 begin
-// But retrieving them with their unique names gives back the Mock classes:
+// Retrieving the instances with the unique service names gives back the Mock classes:
   FOrderValidator := ServiceLocator.GetService<IOrderValidator>(RegisterMocks.TOrderValidatorMockServiceName);
-  TestOrderValidatorIsMock(FOrderValidator);
+  TestOrderValidatorIsClass(FOrderValidator, TOrderValidatorMock);
 end;
 
 procedure TestTOrderProcessor.TestProcessOrder();
