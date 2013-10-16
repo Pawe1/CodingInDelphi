@@ -16,7 +16,7 @@ implementation
 
 uses
   Spring,
-  System.Rtti;
+  Rtti;
 
 class function TRTTI.GetMostQualifiedName<TClass, TInterface>(): string;
 var
