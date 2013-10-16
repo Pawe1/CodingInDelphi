@@ -28,13 +28,14 @@ type
 implementation
 
 uses
-  System.SysUtils,
+  SysUtils,
   uOrder,
   uOrderEntry,
   uOrderEntryMock,
   uOrderValidator,
   uOrderValidatorMock,
   uOrderProcessor,
+  Spring,
   Spring.Container,
   Spring.Services,
   uRegisterMocks;
@@ -71,7 +72,7 @@ var
 begin
   Instance := FInterface as TObject; // as of Delphi 2010, you can do this; see http://stackoverflow.com/questions/4138211/how-to-cast-a-interface-to-a-object-in-delphi/11167316#11167316
   Check(Instance.InheritsFrom(ClassType),
-    Format('%s class "%s" does not inherit from "%s"', [InstanceDescription, Instance.QualifiedClassName, ClassType.QualifiedClassName]));
+    Format('%s class "%s" does not inherit from "%s"', [InstanceDescription, GetQualifiedClassName(Instance), GetQualifiedClassName(ClassType)]));
 end;
 
 procedure TestTOrderProcessor.TestOrderEntryIsClass(const FOrderEntry: IOrderEntry; const ClassType: TClass);
