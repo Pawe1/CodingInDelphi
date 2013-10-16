@@ -44,11 +44,13 @@ uses
 
 class function RegisterMocks.GetTOrderEntryMockServiceName(): string;
 begin
+  RegisterMockClassesIfNeeded();
   Result := FTOrderEntryMockServiceName;
 end;
 
 class function RegisterMocks.GetTOrderValidatorMockServiceName(): string;
 begin
+  RegisterMockClassesIfNeeded();
   Result := FTOrderValidatorMockServiceName;
 end;
 
