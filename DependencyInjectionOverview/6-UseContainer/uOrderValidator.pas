@@ -2,9 +2,12 @@ unit uOrderValidator;
 
 interface
 
+implementation
+
 uses
   uOrder,
-  uOrderInterfaces;
+  uOrderInterfaces,
+  Spring.Container;
 
 type
   // Moving the `TOrderValidator` to the `implementation` section might sound like a smart idea, but it is not:
@@ -15,11 +18,6 @@ type
   public
     function ValidateOrder(const aOrder: TOrder): Boolean;
   end;
-
-implementation
-
-uses
-  Spring.Container;
 
 function TOrderValidator.ValidateOrder(const aOrder: TOrder): Boolean;
 begin

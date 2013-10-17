@@ -2,9 +2,12 @@ unit uOrderEntry;
 
 interface
 
+implementation
+
 uses
   uOrder,
-  uOrderInterfaces;
+  uOrderInterfaces,
+  Spring.Container;
 
 type
   // Moving the `TOrderEntry` to the `implementation` section might sound like a smart idea, but it is not:
@@ -15,11 +18,6 @@ type
   public
     function EnterOrderIntoDatabase(const aOrder: TOrder): Boolean;
   end;
-
-implementation
-
-uses
-  Spring.Container;
 
 function TOrderEntry.EnterOrderIntoDatabase(const aOrder: TOrder): Boolean;
 begin

@@ -30,7 +30,8 @@ uses
   uOrderValidatorMock in 'uOrderValidatorMock.pas',
   uOrderEntryMock in 'uOrderEntryMock.pas',
   uRegisterMocks in 'uRegisterMocks.pas',
-  uRTTI in 'uRTTI.pas';
+  uRTTI in 'uRTTI.pas',
+  uSpringTestCaseHelper in 'uSpringTestCaseHelper.pas';
 
 {R *.RES}
 
