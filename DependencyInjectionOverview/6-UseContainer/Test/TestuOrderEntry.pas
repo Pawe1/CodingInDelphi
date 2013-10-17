@@ -8,12 +8,12 @@ uses
 
 type
   TestTOrderEntry = class(TTestCase)
-  strict private
-    FOrderEntry: IOrderEntry;
   public
     procedure SetUp; override;
   published
     procedure TestEnterOrderIntoDatabase;
+    procedure TestOrderEntryIsMock_ServiceLocator_TOrderEntryMockServiceName();
+    procedure TestOrderEntryIsRegular_ServiceLocator();
   end;
 
 implementation
@@ -21,26 +21,52 @@ implementation
 uses
   uOrder,
   Spring.Services,
-  Spring.Container;
+  Spring.Container,
+  uSpringTestCaseHelper,
+  uOrderEntryMock,
+  uRegisterMocks;
+
+const
+  SOrderEntry = 'OrderEntry';
 
 procedure TestTOrderEntry.SetUp;
 begin
   GlobalContainer.Build();
-  FOrderEntry := ServiceLocator.GetService<IOrderEntry>();
 end;
 
 procedure TestTOrderEntry.TestEnterOrderIntoDatabase;
 var
   Order: TOrder;
+  OrderEntry: IOrderEntry;
   ResultValue: Boolean;
 begin
   Order := TOrder.Create();
   try
-    ResultValue := FOrderEntry.EnterOrderIntoDatabase(Order);
+    OrderEntry := ServiceLocator.GetService<IOrderEntry>();
+    ResultValue := OrderEntry.EnterOrderIntoDatabase(Order);
     Check(ResultValue);
   finally
     Order.Free;
   end;
+end;
+
+procedure TestTOrderEntry.TestOrderEntryIsMock_ServiceLocator_TOrderEntryMockServiceName();
+var
+  OrderEntry: IOrderEntry;
+begin
+// Retrieving the instances with the unique service names gives back the Mock classes:
+  OrderEntry := ServiceLocator.GetService<IOrderEntry>(RegisterMocks.TOrderEntryMockServiceName);
+  TestInterfaceImplementedByClass(OrderEntry, TOrderEntryMock, SOrderEntry);
+end;
+
+procedure TestTOrderEntry.TestOrderEntryIsRegular_ServiceLocator();
+var
+  OrderEntry: IOrderEntry;
+begin
+// Note that going through the ServiceLocator without the names will give you the regular implementations,
+// which you want for the normal business code still to work:
+  OrderEntry := ServiceLocator.GetService<IOrderEntry>();
+  TestInterfaceNotImplementedByClass(OrderEntry, TOrderEntryMock, SOrderEntry);
 end;
 
 initialization
