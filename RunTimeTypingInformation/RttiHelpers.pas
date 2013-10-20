@@ -11,7 +11,7 @@ uses
 
 type
   TRttiTypeHelper = class helper for TRttiType
-    function GetBestName(): string; virtual;
+    function GetMostQualifiedName(): string; virtual;
     function GetProtectionString(): string;
     function GetUnitName(): string; virtual;
   end;
@@ -21,6 +21,8 @@ type
     function FindType(const AInterfaceGUID: TGUID): TRttiInterfaceType; overload;
     function FindTypes(const Predicate: TPredicate<TRttiType>): TArray<TRttiType>;
         overload;
+    function GetMostQualifiedName<TClass: class; TInterface: IInterface>(): string; overload;
+    function GetMostQualifiedName(const ClassRttiType, InterfaceRttiType: TRttiType): string; overload;
     function GetType(const AnInstance: TObject): TRttiInstanceType; overload;
     function GetType<T>(): TRttiType; overload;
   end;
@@ -49,7 +51,7 @@ uses
 {$endif StrictGetType}
   System.Generics.Collections;
 
-function TRttiTypeHelper.GetBestName(): string;
+function TRttiTypeHelper.GetMostQualifiedName(): string;
 begin
   // you cannot ask for QualifiedName on a non-public RttiType
   if Self.IsPublicType then
@@ -138,6 +140,26 @@ begin
   finally
     FilteredRttiTypes.Free;
   end;
+end;
+
+function TRttiContextHelper.GetMostQualifiedName(const ClassRttiType, InterfaceRttiType: TRttiType): string;
+var
+  TClassName: string;
+  TInterfaceName: string;
+begin
+  TClassName := ClassRttiType.GetMostQualifiedName();
+  TInterfaceName := InterfaceRttiType.GetMostQualifiedName();
+  Result := TClassName + '.' + TInterfaceName;
+end;
+
+function TRttiContextHelper.GetMostQualifiedName<TClass, TInterface>(): string;
+var
+  ClassRttiType: TRttiType;
+  InterfaceRttiType: TRttiType;
+begin
+  ClassRttiType := GetType<TClass>();
+  InterfaceRttiType := GetType<TInterface>();
+  Result := GetMostQualifiedName(ClassRttiType, InterfaceRttiType);
 end;
 
 function TRttiContextHelper.GetType(const AnInstance: TObject):
