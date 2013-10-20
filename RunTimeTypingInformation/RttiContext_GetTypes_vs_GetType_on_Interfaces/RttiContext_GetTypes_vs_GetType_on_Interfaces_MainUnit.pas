@@ -31,6 +31,7 @@ implementation
 
 uses
   System.Rtti,
+  RttiHelpers,
   RttiContext_GetTypes_vs_GetType_on_Interfaces_ConsoleReportUnit;
 
 type
@@ -96,6 +97,9 @@ begin
     Writeln;
     ReportImplementedInterfacesByClass(RttiContext, TPrivateImplementingObject);
     ReportImplementedInterfacesByClass(RttiContext, TPrivateImplementingObjectWithoutTypeInfoCalls);
+
+    Writeln;
+    Writeln(RttiContext.GetMostQualifiedName<TPublicImplementingObject, IPublicImplementedInterface>());
 
     Writeln;
     ReportGetTypes(RttiContext);

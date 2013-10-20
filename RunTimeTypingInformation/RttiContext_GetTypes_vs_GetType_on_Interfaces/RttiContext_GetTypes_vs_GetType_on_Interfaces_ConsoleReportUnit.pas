@@ -22,7 +22,7 @@ uses
 procedure Log(const RttiInterfaceType: TRttiInterfaceType);
 begin
   Writeln(Format('Found GUID "%s" with best %s name "%s"', [
-    RttiInterfaceType.GUID.ToString(), RttiInterfaceType.GetProtectionString(), RttiInterfaceType.GetBestName()]));
+    RttiInterfaceType.GUID.ToString(), RttiInterfaceType.GetProtectionString(), RttiInterfaceType.GetMostQualifiedName()]));
 end;
 
 function GetRttiInterfaceType(const RttiContext: TRttiContext; const ATypeInfo: Pointer): TRttiInterfaceType; overload;
@@ -93,8 +93,8 @@ begin
       if (RttiType_ByGUID.GUID <> RttiType_ByInterfaceTypeInfo.GUID) then
         Writeln('  GUID mismatch: ', RttiType_ByGUID.GUID.ToString());
 
-      NameFromGuid := RttiType_ByGUID.GetBestName();
-      NameFromTypeInfo := RttiType_ByInterfaceTypeInfo.GetBestName();
+      NameFromGuid := RttiType_ByGUID.GetMostQualifiedName();
+      NameFromTypeInfo := RttiType_ByInterfaceTypeInfo.GetMostQualifiedName();
       if (NameFromGuid <> NameFromTypeInfo) then
         Writeln('  name mismatch: ', NameFromGuid, ' <> ', NameFromTypeInfo);
       Writeln('  RttiInterfaceType found by TypeInfo:');
@@ -139,7 +139,7 @@ begin
     InterfaceTable := CurrentClassReference.GetInterfaceTable;
     if Assigned(InterfaceTable) then
     begin
-      Writeln(Format(' with RTTI name "%s"', [ClassRttiType.GetBestName()]));
+      Writeln(Format(' with RTTI name "%s"', [ClassRttiType.GetMostQualifiedName()]));
       EntryCount := InterfaceTable.EntryCount;
       Writeln(Format(' implements %d interfaces:', [EntryCount]));
       InterfaceTable_Intfs := @InterfaceTable.Entries[EntryCount]; // right after the final Entries entry.
@@ -156,6 +156,7 @@ begin
         begin
           Write('  ');
           Log(RttiType_ByGUID);
+          Writeln('    ', RttiContext.GetMostQualifiedName(ClassRttiType, RttiType_ByGUID));
         end;
       end;
     end
@@ -174,12 +175,11 @@ begin
   RttiTypes := RttiContext.GetTypes();
   for RttiType in RttiTypes do
   begin
-    Write(Format('%s best name "%s"', [RttiType.GetProtectionString(), RttiType.GetBestName()]));
+    Write(Format('%s best name "%s"', [RttiType.GetProtectionString(), RttiType.GetMostQualifiedName()]));
     if RttiType.IsInstance then
       Writeln(Format(' with QualifiedClassName "%s"', [TRttiInstanceType(RttiType).MetaclassType.QualifiedClassName]))
     else
       Writeln;
-
   end;
 end;
 
