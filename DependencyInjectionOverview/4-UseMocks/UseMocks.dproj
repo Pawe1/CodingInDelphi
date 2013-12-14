@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{CCAEF9DF-A55F-448E-A8D6-C780861B3B14}</ProjectGuid>
-        <ProjectVersion>15.1</ProjectVersion>
+        <ProjectVersion>15.2</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <MainSource>UseMocks.dpr</MainSource>
         <Base>True</Base>

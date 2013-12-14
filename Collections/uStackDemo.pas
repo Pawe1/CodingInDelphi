@@ -21,6 +21,7 @@ var
   C: Char;
   TempStr: string;
   i: integer;
+  CharOnly: string;
 begin
   Stack := TCharStack.Create;
   try
@@ -36,7 +37,15 @@ begin
       TempStr := TempStr + Stack.Pop;
     end;
 
-    Result := TempStr = aString;
+    CharOnly := '';
+    for C in aString do
+    begin
+      if TCharacter.IsLetter(C) then
+        CharOnly := CharOnly + C.ToLower;
+    end;
+
+
+    Result := TempStr = CharOnly;
   finally
     Stack.Free;
   end;

@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{E8BF3D09-CE42-4889-A6F2-91D75EE7E139}</ProjectGuid>
-        <ProjectVersion>15.1</ProjectVersion>
+        <ProjectVersion>15.2</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <MainSource>FieldInjection.dpr</MainSource>
         <Base>True</Base>
