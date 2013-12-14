@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{03E43D6C-008E-4879-B8F6-78D78BE88E93}</ProjectGuid>
-        <ProjectVersion>15.1</ProjectVersion>
+        <ProjectVersion>15.2</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <MainSource>IsolateInterfaces.dpr</MainSource>
         <Base>True</Base>

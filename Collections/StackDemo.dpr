@@ -8,16 +8,24 @@ uses
   System.SysUtils,
   uStackDemo in 'uStackDemo.pas';
 
-begin
-  try
-    if IsPalindrome('racecar') then
+  procedure CheckIsPalindrome(const aString: string);
+  begin
+    if IsPalindrome(aString) then
     begin
-      WriteLn('"racecar" is indeed a palindrome');
+      Writeln(Format('%s is indeed a palindrome', [QuotedStr(aString)]));
     end else
     begin
-      WriteLn('"racecar" is a palindrome, but the algorithm says it isn''t');
+      Writeln(Format('%s is NOT a palindrome', [QuotedStr(aString)]));
     end;
+  end;
 
+
+begin
+  try
+    CheckIsPalindrome('racecar');
+    CheckIsPalindrome('A Toyota');
+    CheckIsPalindrome('Madam, I''m Adam');
+    CheckIsPalindrome('I am not a bicycle');
   except
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);

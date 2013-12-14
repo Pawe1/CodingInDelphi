@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{AA827C45-F4B9-4983-AAB4-4F037DE07FAF}</ProjectGuid>
-        <ProjectVersion>15.1</ProjectVersion>
+        <ProjectVersion>15.2</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <MainSource>CustomConstructor.dpr</MainSource>
         <Base>True</Base>
